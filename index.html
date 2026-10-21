@@ -243,7 +243,28 @@ renderAll();
   const SUPABASE_URL='https://rohkuirrvizmcztdhpua.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY='sb_publishable_hph18eKVnTQQeq7GJYVDaQ_3epZRF9c';
   const gate=document.getElementById('cloudGate'), status=document.getElementById('cloudStatus'), error=document.getElementById('cloudError');
-  let client, user=null, queue=Promise.resolve(), loading=false;
+  let client, user=null, queue=Promise.resolve(), loading=false, pendingSaves=0, lastCloudVersion='', polling=false;
+  // Pull changes from other devices without overwriting an edit still being saved locally.
+  async function refreshFromCloud(){
+    if(!user||loading||pendingSaves||polling||document.getElementById('cloudGate').classList.contains('hidden')===false)return;
+    polling=true;
+    try{
+      const {data,error:readError}=await client.from('bloom_user_data').select('data,updated_at').eq('user_id',user.id).maybeSingle();
+      if(readError)throw readError;
+      if(data?.data&&Array.isArray(data.data.entries)&&data.updated_at!==lastCloudVersion){
+        state=data.data;state.stickers=state.stickers||{};state.categories=Array.isArray(state.categories)?state.categories:['Stocks','Options'];
+        localStorage.setItem(KEY,JSON.stringify(state));lastCloudVersion=data.updated_at;renderAll();
+        if(typeof window.renderMarketEvents==='function')window.renderMarketEvents();
+        setStatus('☁️ Synced from another device');
+        setTimeout(()=>{if(status.textContent==='☁️ Synced from another device')setStatus('')},3000);
+      }
+    }catch(e){console.warn('Cloud refresh failed',e)}
+    finally{polling=false}
+  }
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshFromCloud()});
+  window.addEventListener('focus',()=>refreshFromCloud());
+  window.addEventListener('online',()=>refreshFromCloud());
+  setInterval(()=>{if(!document.hidden)refreshFromCloud()},12000);
   const setStatus=(message)=>{status.textContent=message;};
   function defaultState(){return {entries:[],categories:['Stocks','Options'],bg:'#ffdce9',calendar:'#ffffff',stickers:{}};}
   function showGate(message=''){gate.classList.remove('hidden');error.textContent=message;setStatus('');}
@@ -251,9 +272,10 @@ renderAll();
     if(!session?.user){user=null;window.cloudSave=null;showGate();return;}
     loading=true;user=session.user;setStatus('Loading cloud data…');
     try{
-      const {data, error:readError}=await client.from('bloom_user_data').select('data').eq('user_id',user.id).maybeSingle();
+      const {data, error:readError}=await client.from('bloom_user_data').select('data,updated_at').eq('user_id',user.id).maybeSingle();
       if(readError)throw readError;
       state=data?.data&&Array.isArray(data.data.entries)?data.data:defaultState();
+      lastCloudVersion=data?.updated_at||'';
       state.stickers=state.stickers||{};
       state.categories=Array.isArray(state.categories)?state.categories:['Stocks','Options'];
       localStorage.setItem(KEY,JSON.stringify(state));
@@ -267,13 +289,16 @@ renderAll();
   function enqueueSave(snapshot){
     if(!user||loading)return;
     const userId=user.id;
+    pendingSaves++;
     setStatus('☁️ Saving…');
     queue=queue.catch(()=>{}).then(async()=>{
       if(!user||user.id!==userId)return;
-      const {error:saveError}=await client.from('bloom_user_data').upsert({user_id:userId,data:snapshot,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+      const updatedAt=new Date().toISOString();
+      const {error:saveError}=await client.from('bloom_user_data').upsert({user_id:userId,data:snapshot,updated_at:updatedAt},{onConflict:'user_id'});
       if(saveError)throw saveError;
+      lastCloudVersion=updatedAt;
       setStatus('☁️ Saved');
-    }).catch(e=>{setStatus('⚠️ Cloud save failed — export a backup');console.error('Cloud save error',e);});
+    }).catch(e=>{setStatus('⚠️ Cloud save failed — export a backup');console.error('Cloud save error',e);}).finally(()=>{pendingSaves=Math.max(0,pendingSaves-1)});
   }
   async function init(){
     if(!window.supabase?.createClient){showGate('Could not load the cloud library. Check your internet connection and reload.');return;}
