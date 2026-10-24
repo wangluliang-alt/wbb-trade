@@ -527,7 +527,22 @@ let mode='week',cursor=new Date(),editing=null;cursor.setHours(12,0,0,0);
 const el=id=>document.getElementById(id),p=n=>String(n).padStart(2,'0'),dateKey=d=>`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;
 const shift=(d,n)=>{let x=new Date(d);x.setDate(x.getDate()+n);return x},monday=d=>shift(d,-((d.getDay()+6)%7));
 const SHARED_MARKET_EVENTS={
-"2026-10-28":[{time:"",title:"FOMC meeting (Oct 27–28 US)",notes:"Official FOMC meeting calendar; rate announcement time check separately"}]
+"2026-10-28":[
+{time:"",title:"Seagate (STX) earnings",notes:"US Oct 27 after close; Singapore Oct 28"},
+{time:"",title:"SK hynix earnings",notes:"US Oct 27 after close; check company release time"},
+{time:"",title:"FOMC meeting day 1",notes:"US Oct 27; Singapore calendar date Oct 28"}],
+"2026-10-29":[
+{time:"02:00",title:"FOMC rate decision",notes:"US Oct 28, 2:00pm ET; Singapore time"},
+{time:"02:30",title:"FOMC press conference",notes:"US Oct 28, 2:30pm ET; Singapore time"},
+{time:"",title:"Microsoft (MSFT) earnings",notes:"US Oct 28 after close; call 05:30 SGT"},
+{time:"",title:"Alphabet (GOOGL) earnings",notes:"US Oct 28 after close; call 04:30 SGT"},
+{time:"",title:"ServiceNow (NOW) earnings",notes:"US Oct 28 after close"},
+{time:"20:30",title:"US GDP Q3 advance estimate",notes:"BEA official schedule; Singapore time"},
+{time:"20:30",title:"US PCE / Personal Income and Outlays",notes:"September 2026 data; BEA official schedule; Singapore time"}],
+"2026-10-30":[
+{time:"",title:"Amazon (AMZN) earnings",notes:"US Oct 29 after close; call 05:00 SGT"},
+{time:"",title:"Intel (INTC) earnings",notes:"US Oct 29 after close; call 05:00 SGT"},
+{time:"",title:"Sandisk (SNDK) earnings",notes:"US Oct 29 after close; call 04:30 SGT"}]
 };
 const data=()=>{if(!state.marketEvents||typeof state.marketEvents!=='object'||Array.isArray(state.marketEvents))state.marketEvents={};const result={...state.marketEvents};for(const [date,items] of Object.entries(SHARED_MARKET_EVENTS)){const existing=result[date]||[];result[date]=[...existing,...items.filter(e=>!existing.some(x=>x.title===e.title&&x.time===e.time))].sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'))}return result};
 function item(date,small,month){let btn=document.createElement('button');btn.type='button';btn.className='market-day';if(dateKey(date)===dateKey(new Date()))btn.classList.add('today');if(small&&date.getMonth()!==month)btn.classList.add('outside');let title=document.createElement('b');title.textContent=small?date.getDate():date.getDate()+'  '+date.toLocaleDateString('en-SG',{weekday:'short'});btn.append(title);let entries=data()[dateKey(date)]||[];if(!small){let plus=document.createElement('span');plus.textContent=' +';plus.style.color='#c080a8';title.append(plus)}if(!entries.length&&!small){let empty=document.createElement('div');empty.className='market-empty';empty.textContent='Tap to add event';btn.append(empty)}entries.slice(0,3).forEach(entry=>{let line=document.createElement('div');line.className='market-event';line.textContent=(entry.time?entry.time+' ':'')+entry.title;btn.append(line)});if(entries.length>3){let more=document.createElement('div');more.className='market-event';more.textContent=`+${entries.length-3} more`;btn.append(more)}btn.onclick=()=>edit(date);return btn}
