@@ -529,9 +529,9 @@ const el=id=>document.getElementById(id),p=n=>String(n).padStart(2,'0'),dateKey=
 const shift=(d,n)=>{let x=new Date(d);x.setDate(x.getDate()+n);return x},monday=d=>shift(d,-((d.getDay()+6)%7));
 const SHARED_MARKET_EVENTS={
 "2026-10-27":[
-{time:"",title:"FOMC meeting day 1",notes:"US October 27; all-day meeting, no specific public release time"},
-{time:"",title:"SK hynix earnings",notes:"Korea local date Oct 27; Singapore time of release not confirmed"}],
+{time:"",title:"FOMC meeting day 1",notes:"US October 27; all-day meeting, no specific public release time"}],
 "2026-10-28":[
+{time:"08:00",title:"SK hynix Q3 2026 earnings call",notes:"Official earnings press release before 08:00 SGT (09:00 Seoul); conference call starts 08:00 SGT, Oct 28. Source: SK hynix IR announcement Oct 21, 2026"},
 {time:"04:05",title:"Seagate (STX) earnings",notes:"Estimated release time, SGT (not an official announced minute); US Oct 27 after close"}],
 "2026-10-29":[
 {time:"02:00",title:"FOMC rate decision",notes:"Confirmed scheduled time, SGT (US Oct 28, 2:00pm ET)"},
