@@ -183,7 +183,7 @@ function playKaching(amount){
  const pick=pool[index];
  if(mode==='sequential'){state.soundPositions[type]=(index+1)%pool.length;saveState()}
  try{if(currentSound){currentSound.pause();currentSound.currentTime=0}
-  currentSound=new Audio(pick);currentSound.volume=0.8;
+  currentSound=new Audio(pick);currentSound.volume=0.35;
   const playback=currentSound.play();if(playback&&playback.catch)playback.catch(err=>console.warn('Sound blocked by browser',err));
  }catch(err){console.warn('Sound unavailable',err)}
 }
