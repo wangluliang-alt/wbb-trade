@@ -551,7 +551,29 @@ const SHARED_MARKET_EVENTS={
 "2026-10-30":[
 {time:"04:05",title:"Amazon (AMZN) earnings",notes:"Estimated earnings release time (not officially confirmed minute), SGT; conference call 05:00 SGT"},
 {time:"04:05",title:"Intel (INTC) earnings",notes:"Estimated earnings release time (not officially confirmed minute), SGT; conference call 05:00 SGT"},
-{time:"04:05",title:"Sandisk (SNDK) earnings",notes:"Estimated earnings release time (not officially confirmed minute), SGT; conference call 04:30 SGT"}]
+{time:"04:05",title:"Sandisk (SNDK) earnings",notes:"Estimated earnings release time (not officially confirmed minute), SGT; conference call 04:30 SGT"}],
+"2026-11-02":[
+{time:"23:00",title:"ISM Manufacturing PMI",notes:"Official ISM release; US manufacturing. 10:00 EST = 23:00 SGT."}],
+"2026-11-04":[
+{time:"05:30",title:"Arista (ANET) Q3 earnings call",notes:"Official Arista IR; AI Networking, CapEx; Nov 3 16:30 EST."},
+{time:"05:30",title:"Astera Labs (ALAB) Q3 earnings call",notes:"Official Astera Labs IR; AI connectivity; Nov 3 16:30 EST."},
+{time:"06:00",title:"AMD Q3 earnings call",notes:"Official AMD IR; AI GPU, Data Center; Nov 3 17:00 EST."},
+{time:"08:00",title:"US Midterm Elections — results begin (approx.)",notes:"US election is Nov 3 local; vote counts roll in across states, not a fixed nationwide release. Around 08:00 SGT onward, with earlier returns possible."},
+{time:"23:00",title:"ISM Services PMI",notes:"Official ISM release; US services growth. 10:00 EST = 23:00 SGT."}],
+"2026-11-05":[
+{time:"05:30",title:"Coherent (COHR) earnings call",notes:"Official Coherent IR; optical and AI data centers; Nov 4 16:30 EST."},
+{time:"05:45",title:"Qualcomm (QCOM) earnings call",notes:"Official Qualcomm IR; AI chips and guidance; Nov 4 13:45 PST."},
+{time:"06:00",title:"ARM earnings call",notes:"Official Arm IR; AI server and royalty; Nov 4 14:00 PST."}],
+"2026-11-06":[
+{time:"06:00",title:"Lumentum (LITE) earnings call",notes:"Official Lumentum earnings announcement; optical networking; Nov 5 17:00 EST."},
+{time:"21:30",title:"US Nonfarm Payrolls (October)",notes:"Official BLS employment situation release; jobs and Fed; Nov 6 08:30 EST."}],
+"2026-11-10":[
+{time:"21:30",title:"US CPI (October)",notes:"Official BLS consumer price index release; inflation and Nasdaq; Nov 10 08:30 EST."}],
+"2026-11-11":[
+{time:"06:00",title:"CoreWeave (CRWV) Q3 earnings call",notes:"Official CoreWeave IR Oct 27 announcement; GPU demand, debt and CapEx; Nov 10 17:00 EST."}],
+"2026-11-13":[
+{time:"05:30",title:"Applied Materials (AMAT) Q4 earnings call",notes:"Official AMAT IR Oct 22 announcement; memory CapEx and HBM; Nov 12 16:30 EST."},
+{time:"21:30",title:"US PPI (October)",notes:"Official BLS producer price index release; producer inflation; Nov 13 08:30 EST."}]
 };
 const data=()=>{if(!state.marketEvents||typeof state.marketEvents!=='object'||Array.isArray(state.marketEvents))state.marketEvents={};const result={...state.marketEvents};for(const [date,items] of Object.entries(SHARED_MARKET_EVENTS)){const existing=result[date]||[];result[date]=[...existing,...items.filter(e=>!existing.some(x=>x.title===e.title&&x.time===e.time))].sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'))}return result};
 function displayEventTime(t){if(!t)return '';const m=/^(\d{1,2}):(\d{2})$/.exec(t);if(!m)return t;const h=Number(m[1]);return `${h%12||12}${m[2]==='00'?'':':'+m[2]} ${h<12?'a.m.':'p.m.'}`}
