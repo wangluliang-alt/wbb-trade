@@ -125,6 +125,9 @@
    Explicitly display the title and keep the unused notes field hidden. */
 #marketRows .market-row .market-title-full{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;min-height:110px!important;height:auto;box-sizing:border-box;background:#fff;color:#20212a;resize:vertical;line-height:1.5;white-space:pre-wrap}
 #marketRows .market-row .market-notes-optional{display:none!important}
+/* Keep the saved SGT time visible and editable in the event detail sheet. */
+#marketRows .market-row input[type=time]{display:block!important;visibility:visible!important;flex:0 0 112px;width:112px;align-self:flex-start;margin-top:8px;box-sizing:border-box;font-size:14px}
+@media(max-width:600px){#marketRows .market-rowtop{flex-wrap:wrap}#marketRows .market-row input[type=time]{flex:0 0 100%;width:100%;max-width:150px}}
 #marketRows .market-rowtop{display:flex;width:100%;flex:1;min-width:0}
 #marketRows .market-row{display:flex;align-items:center;gap:10px}
 </style><style id="wbb-trade-event-link">
