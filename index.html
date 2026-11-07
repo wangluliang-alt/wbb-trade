@@ -185,26 +185,37 @@
 #calendarPage .wbb-november .wbb-ginger-header .wbb-original-banner{display:block!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center top!important;filter:none!important}
 #calendarPage .wbb-november .week{border-top-color:#e7c7a4}
 </style><style id="wbb-performance-november-theme">
-/* November-themed Performance view, based on the period being reviewed. */
+/* November Performance: same gingerbread banner as Calendar, plain matching cream below. */
 #statsPage.wbb-perf-november{
- background:#fff2df url("./a_watercolor_style_background_illustration_a_warm.png") center center / 100% 100% no-repeat!important;
- border:1px solid #f0d4ae;
+ background:#fff0dd!important;
+ border:1px solid #f1d3b3;
  color:#563c2d;
+ padding-top:0!important;
+ overflow:hidden;
+}
+#statsPage.wbb-perf-november::before{
+ content:"";
+ display:block;
+ width:calc(100% + 16px);
+ margin:0 -8px 12px;
+ aspect-ratio:3 / 1;
+ background:#fff0dd url("./November%20Gingerbread%20Autumn%20Banner.png") center top / cover no-repeat;
 }
 #statsPage.wbb-perf-november>.section,
 #statsPage.wbb-perf-november #chartArea{
- background:rgba(255,247,233,.76)!important;
- border:1px solid rgba(194,135,81,.17);
+ background:#fff0dd!important;
+ border-color:#e9cfb1!important;
 }
 #statsPage.wbb-perf-november .stat{
- background:rgba(255,238,202,.92)!important;
- box-shadow:0 1px 5px #a56d3512;
+ background:#ffebc9!important;
+ box-shadow:none;
 }
 #statsPage.wbb-perf-november .wbb-period-tabs,
-#statsPage.wbb-perf-november .toggle{background:rgba(255,239,211,.76)!important}
+#statsPage.wbb-perf-november .toggle{background:#fff0dd!important}
 #statsPage.wbb-perf-november .wbb-period-tabs button.on,
 #statsPage.wbb-perf-november .toggle button.on{background:#ffbc57!important;color:#583512!important}
-#statsPage.wbb-perf-november h1,#statsPage.wbb-perf-november h3{color:#71462c}
+#statsPage.wbb-perf-november h1{display:none!important}
+#statsPage.wbb-perf-november h3{color:#71462c}
 </style><style id="wbb-november-country-cottage-background">
 /* November only: watercolor artwork behind the calendar, without changing the gingerbread header. */
 #calendarPage .panel.wbb-november{
