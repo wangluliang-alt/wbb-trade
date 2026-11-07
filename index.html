@@ -224,7 +224,7 @@ function wbbNovemberTheme(){
 }
 // Automatic major US macro event highlights, derived from the same events shown in Events.
 function wbbMajorEventLabels(date){
- const shared=typeof SHARED_MARKET_EVENTS!=='undefined'?SHARED_MARKET_EVENTS[date]:null;
+ const shared=window.wbbSharedMarketEvents?.[date]||null;
  const overrides=state.marketEvents&&Object.prototype.hasOwnProperty.call(state.marketEvents,date)?state.marketEvents[date]:null;
  const items=Array.isArray(overrides)?overrides:(Array.isArray(shared)?shared:[]);
  const labels=new Set();
@@ -866,6 +866,8 @@ const SHARED_MARKET_EVENTS={
     }
   ]
 };
+window.wbbSharedMarketEvents=SHARED_MARKET_EVENTS;
+queueMicrotask(()=>{if(typeof renderCalendar==='function')renderCalendar()});
 const data=()=>{if(!state.marketEvents||typeof state.marketEvents!=='object'||Array.isArray(state.marketEvents))state.marketEvents={};const result={};for(const [date,items] of Object.entries(SHARED_MARKET_EVENTS))result[date]=items;for(const [date,items] of Object.entries(state.marketEvents)){if(Array.isArray(items))result[date]=items;}return result};
 function displayEventTime(t){if(!t)return '';const m=/^(\d{1,2}):(\d{2})$/.exec(t);if(!m)return t;const h=Number(m[1]);return `${h%12||12}${m[2]==='00'?'':':'+m[2]} ${h<12?'a.m.':'p.m.'}`}
 function item(date,small,month){let btn=document.createElement('button');btn.type='button';btn.className='market-day';if(dateKey(date)===dateKey(new Date()))btn.classList.add('today');if(small&&date.getMonth()!==month)btn.classList.add('outside');let title=document.createElement('b');title.textContent=small?date.getDate():date.getDate()+'  '+date.toLocaleDateString('en-SG',{weekday:'short'});btn.append(title);let entries=data()[dateKey(date)]||[];if(!small){let plus=document.createElement('span');plus.textContent=' +';plus.style.color='#c080a8';title.append(plus)}if(!entries.length&&!small){let empty=document.createElement('div');empty.className='market-empty';empty.textContent='Tap to add event';btn.append(empty)}entries.slice(0,3).forEach(entry=>{let line=document.createElement('div');line.className='market-event';line.textContent=(entry.time?displayEventTime(entry.time)+' ':'')+entry.title;btn.append(line)});if(entries.length>3){let more=document.createElement('div');more.className='market-event';more.textContent=`+${entries.length-3} more`;btn.append(more)}btn.onclick=()=>edit(date);return btn}
