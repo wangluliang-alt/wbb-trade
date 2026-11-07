@@ -195,9 +195,11 @@
 #statsPage .wbb-period-tabs button,
 #statsPage>.section:nth-of-type(2) .toggle button{font-size:15px;line-height:1.2;padding:10px 5px}
 #statsPage .stat small{font-size:16px;line-height:1.3}
-#statsPage .stat strong{font-size:27px;line-height:1.15}
+#statsPage .stat strong{font-size:25px;line-height:1.15}
+#statsPage .stat strong.wbb-profit-number{color:#178348!important}
+#statsPage .stat strong.wbb-loss-number{color:#cb3b3b!important}
 #statsPage .stat{padding:16px}
-@media(max-width:380px){#statsPage .stat small{font-size:15px}#statsPage .stat strong{font-size:24px}#statsPage .wbb-period-tabs button,#statsPage>.section:nth-of-type(2) .toggle button{font-size:14px}}
+@media(max-width:380px){#statsPage .stat small{font-size:15px}#statsPage .stat strong{font-size:23px}#statsPage .wbb-period-tabs button,#statsPage>.section:nth-of-type(2) .toggle button{font-size:14px}}
 </style><style id="wbb-performance-november-theme">
 /* November Performance: same gingerbread banner as Calendar, plain matching cream below. */
 #statsPage.wbb-perf-november{
@@ -694,7 +696,7 @@ $id('statsYear').textContent=title+' overview';
 $id('wbbPeriodLabel').textContent=period==='weekly'?label(start)+' – '+label(addDays(end,-1)):period==='monthly'?start.toLocaleDateString('en-US',{month:'long',year:'numeric'}):String(start.getFullYear());
 const amount=sum(entries),wins=entries.filter(e=>Number(e.amount)>0).length,losses=entries.filter(e=>Number(e.amount)<0).length;
 const daily=new Map();for(const e of entries)daily.set(e.date,(daily.get(e.date)||0)+Number(e.amount));const days=[...daily].map(([date,amount])=>({date,amount}));const biggestWin=days.filter(d=>d.amount>0).sort((a,b)=>b.amount-a.amount)[0];const biggestLoss=days.filter(d=>d.amount<0).sort((a,b)=>a.amount-b.amount)[0];const dayStat=(label,item)=>[label,item?money(item.amount):'—',item?item.date:''];
-$id('statgrid').innerHTML=[[title+' P&L',money(amount)],['Entries',entries.length],['Profitable entries',wins],['Losing entries',losses],dayStat('Biggest Daily Profit',biggestWin),dayStat('Biggest Daily Loss',biggestLoss)].map(([a,b,date])=>`<div class="stat"><small>${a}</small><strong>${b}</strong>${date?'<small>'+date+'</small>':''}</div>`).join('');
+$id('statgrid').innerHTML=[[title+' P&L',money(amount)],['Entries',entries.length],['Profitable entries',wins],['Losing entries',losses],dayStat('Biggest Daily Profit',biggestWin),dayStat('Biggest Daily Loss',biggestLoss)].map(([a,b,date],i)=>`<div class="stat"><small>${a}</small><strong class="${i===0?(amount>0?'wbb-profit-number':amount<0?'wbb-loss-number':''):i===4?'wbb-profit-number':i===5?'wbb-loss-number':''}">${b}</strong>${date?'<small>'+date+'</small>':''}</div>`).join('');
 const count=$id('statgrid').children[1];count.classList.add('stat-click');count.title='View all historical entries';count.onclick=wbbShowHistory;
 $id('wbbPeriodTabs').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.period===period));
 }
