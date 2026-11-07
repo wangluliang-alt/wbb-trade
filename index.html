@@ -232,7 +232,7 @@ function wbbMajorEventLabels(date){
   const title=String(event?.title||'');
   if(/\bCPI\b|consumer price index/i.test(title))labels.add('CPI');
   if(/\bPPI\b|producer price index/i.test(title))labels.add('PPI');
-  if(/\bNFP\b|nonfarm payrolls|non-farm payrolls|employment situation|jobs report|job report/i.test(title))labels.add('NFP');
+  if(/\bNFP\b|nonfarm payrolls|non-farm payrolls|employment situation|jobs report|job report/i.test(title))labels.add('JOB');
   if(/\bFOMC\b|federal reserve (?:rate )?decision|fed rate decision/i.test(title)&&!/press conference|meeting day|minutes|transcript/i.test(title))labels.add('FOMC');
  }
  return [...labels];
