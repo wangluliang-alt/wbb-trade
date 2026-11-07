@@ -187,11 +187,19 @@
 </style><style id="wbb-november-country-cottage-background">
 /* November only: watercolor artwork behind the calendar, without changing the gingerbread header. */
 #calendarPage .panel.wbb-november{
- background-image:url("./a_watercolor_style_background_illustration_a_warm.png")!important;
+ position:relative;
+ isolation:isolate;
+ background-image:none!important;
  background-color:#fff1dc!important;
- background-repeat:no-repeat!important;
- background-size:100% 100%!important;
- background-position:center center!important;
+}
+#calendarPage .panel.wbb-november::before{
+ content:"";
+ position:absolute;
+ left:0;right:0;bottom:0;
+ top:var(--wbb-cottage-start,240px);
+ background:url("./a_watercolor_style_background_illustration_a_warm.png") center center / 100% 100% no-repeat;
+ pointer-events:none;
+ z-index:-1;
 }
 #calendarPage .wbb-november .wbb-ginger-header{background:#fff0dd!important}
 #calendarPage .wbb-november .week,#calendarPage .wbb-november .days{position:relative;z-index:1}
@@ -237,6 +245,8 @@ function wbbNovemberTheme(){
  if(november){if(!header){header=document.createElement('div');header.className='wbb-ginger-header';header.innerHTML='<img class="wbb-original-banner" src="./November%20Gingerbread%20Autumn%20Banner.png" alt="November 2026 gingerbread autumn banner">';panel.querySelector('.monthbar').after(header)}}
 
  else if(header)header.remove();
+ if(november&&header){const setCottageStart=()=>{const p=panel.getBoundingClientRect(),h=header.getBoundingClientRect();panel.style.setProperty('--wbb-cottage-start',Math.max(0,h.bottom-p.top)+'px')};setCottageStart();header.querySelector('img')?.addEventListener('load',setCottageStart,{once:true})}
+ else panel.style.removeProperty('--wbb-cottage-start');
 }
 // Automatic major US macro event highlights, derived from the same events shown in Events.
 function wbbMajorEventLabels(date){
