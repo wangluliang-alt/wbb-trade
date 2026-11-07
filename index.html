@@ -185,18 +185,19 @@
 #calendarPage .wbb-november .wbb-ginger-header .wbb-original-banner{display:block!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center top!important;filter:none!important}
 #calendarPage .wbb-november .week{border-top-color:#e7c7a4}
 </style><style id="wbb-performance-typography-balance">
-/* Performance: make the summary legible and the chart controls less dominant. */
-#statsPage #statsYear{font-size:24px;line-height:1.2}
+/* Consistent type scale across matching Performance components. */
+#statsPage #statsYear,
+#statsPage>.section:nth-of-type(2)>h3{font-size:23px;line-height:1.25;font-weight:700}
+#statsPage .wbb-period-nav span,
+#statsPage>.section:nth-of-type(2) .monthbar{font-size:19px;line-height:1.3;font-weight:650}
+#statsPage .wbb-period-nav button,
+#statsPage>.section:nth-of-type(2) .monthbar .arrow{font-size:29px}
+#statsPage .wbb-period-tabs button,
+#statsPage>.section:nth-of-type(2) .toggle button{font-size:15px;line-height:1.2;padding:10px 5px}
 #statsPage .stat small{font-size:16px;line-height:1.3}
 #statsPage .stat strong{font-size:27px;line-height:1.15}
 #statsPage .stat{padding:16px}
-#statsPage .wbb-period-tabs button{font-size:16px}
-#statsPage .wbb-period-nav span{font-size:19px}
-#statsPage>.section:nth-of-type(2)>h3{font-size:21px}
-#statsPage>.section:nth-of-type(2) .monthbar{font-size:19px}
-#statsPage>.section:nth-of-type(2) .monthbar .arrow{font-size:29px}
-#statsPage>.section:nth-of-type(2) .toggle button{font-size:14px;padding:9px 5px;line-height:1.2}
-@media(max-width:380px){#statsPage .stat small{font-size:15px}#statsPage .stat strong{font-size:24px}#statsPage>.section:nth-of-type(2) .toggle button{font-size:13px}}
+@media(max-width:380px){#statsPage .stat small{font-size:15px}#statsPage .stat strong{font-size:24px}#statsPage .wbb-period-tabs button,#statsPage>.section:nth-of-type(2) .toggle button{font-size:14px}}
 </style><style id="wbb-performance-november-theme">
 /* November Performance: same gingerbread banner as Calendar, plain matching cream below. */
 #statsPage.wbb-perf-november{
