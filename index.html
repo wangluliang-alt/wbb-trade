@@ -633,7 +633,28 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
    try{const url=await signedUrl(currentDate);if(token!==generation)return;$('snapshotPreview').src=url;$('snapshotPreview').classList.remove('hidden');$('snapshotView').classList.remove('hidden');$('snapshotDelete').classList.remove('hidden')}catch(e){message('Photo unavailable: '+e.message)}
  }
  async function sync(){await refreshList();await render()}
- $('snapshotUpload').onclick=()=>$('snapshotFile').click();
+ $('snapshotUpload').onclick=async()=>{
+  // Prefer a direct image picker where the browser supports one; preserve the
+  // existing iOS file-input workflow as a safe fallback.
+  if(typeof window.showOpenFilePicker==='function'){
+    try{
+      const [handle]=await window.showOpenFilePicker({multiple:false,types:[{description:'Photos',accept:{'image/png':['.png'],'image/jpeg':['.jpg','.jpeg'],'image/webp':['.webp']}}]});
+      if(handle){
+        const file=await handle.getFile();
+        const input=$('snapshotFile');
+        const transfer=new DataTransfer();
+        transfer.items.add(file);
+        input.files=transfer.files;
+        input.dispatchEvent(new Event('change',{bubbles:true}));
+      }
+      return;
+    }catch(err){
+      if(err?.name==='AbortError')return;
+      // Unsupported or blocked picker: use the original upload input.
+    }
+  }
+  $('snapshotFile').click();
+};
  $('snapshotFile').onchange=async e=>{const file=e.target.files?.[0];e.target.value='';if(!file||busy)return;
    const date=dateFromApp();if(!currentUser){message('Please sign in first.');return}
    const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp'})[file.type];if(!ext){message('Please choose a JPG, PNG or WebP photo.');return}
