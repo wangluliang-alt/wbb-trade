@@ -189,7 +189,7 @@
 #wbbNotesOpen{display:block;width:100%;padding:19px 20px 17px;text-align:left;background:transparent;border:0;color:var(--ink,#24242b);cursor:pointer;font:inherit}
 .wbb-notes-title{display:flex;align-items:center;gap:9px;font-size:20px;font-weight:750}
 .wbb-notes-chevron{margin-left:auto;color:#b54b81;font-size:28px;font-weight:500;line-height:1}
-.wbb-notes-preview{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;line-height:1.5;color:#62616b;margin:10px 0 0}
+.wbb-notes-preview{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.5;color:#62616b;margin:10px 0 0}
 .wbb-notes-preview.wbb-notes-empty{color:#92909a}
 .wbb-notes-sheet{max-height:85dvh;display:flex;flex-direction:column;gap:12px}
 .wbb-notes-modalhead{display:flex;justify-content:space-between;align-items:center;gap:12px}
@@ -357,7 +357,7 @@ function wbbNovemberStickerCleanupControl(){
 function wbbNotesForDate(date){return typeof state.dailyNotes?.[date]==='string'?state.dailyNotes[date]:''}
 window.wbbRenderDailyNotes=function(){
  const preview=document.getElementById('wbbNotesPreview');if(!preview)return;
- const note=wbbNotesForDate(selected).trim().replace(/\s+/g,' ');
+ const note=wbbNotesForDate(selected).trim();
  preview.textContent=note||'Tap to add notes';
  preview.classList.toggle('wbb-notes-empty',!note);
 };
